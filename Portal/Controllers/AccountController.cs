@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Portal.DB;
 using Portal.Models;
 
@@ -43,6 +44,11 @@ namespace Portal.Controllers
                 System.Console.WriteLine(password);
             }
             return View();
+        }
+
+        public String Api()
+        {
+            return JsonConvert.SerializeObject(new {test = "test"});
         }
     }
 }
