@@ -33,6 +33,10 @@ namespace Portal
             {
                 options.UseMySql(Configuration.GetConnectionString("MysqlContext"));
             });
+            services.AddDbContext<ApplicationContext>(options =>
+            {
+                options.UseMySql(Configuration.GetConnectionString("MysqlContext"));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

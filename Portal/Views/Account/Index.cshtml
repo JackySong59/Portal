@@ -7,9 +7,11 @@
 <div>
     <h4 style="text-align: center;">Login</h4>
     <form asp-controller="Account" asp-action="Index">
+        <p>@ViewData["status"]</p>
         <p>
             Username: <input type="text" name="username"/>
             Password: <input type="password" name="password"/>
+            <input type="hidden" name="appkey" value="@ViewData["appkey"]" />
             <input type="submit" value="Login"/>
         </p>
     </form>
