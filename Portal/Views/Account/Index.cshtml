@@ -4,4 +4,27 @@
 
 <!DOCTYPE html>
 
-<p>test</p>
+<div>
+    <h4 style="text-align: center;">Login</h4>
+    <form asp-controller="Account" asp-action="Index">
+        <p>
+            Username: <input type="text" name="username"/>
+            Password: <input type="password" name="password"/>
+            <input type="submit" value="Login"/>
+        </p>
+    </form>
+</div>
+
+<style type="text/css">
+    p.login {
+    float: left;
+    }
+    
+    input.login {
+    float: left;
+    }
+    
+    div.login {
+    width: 50%;
+    }
+</style>
