@@ -40,7 +40,7 @@ namespace Portal.Controllers
 
             if (loginUser != null)
             {
-                selectedAccount = accounts.Where(ac => ac.Username == username).FirstOrDefault();
+                selectedAccount = accounts.Where(ac => ac.Username == loginUser).FirstOrDefault();
                 ViewData["status"] = "Login Success";
                 loginSuccess = true;
             }
@@ -101,7 +101,7 @@ namespace Portal.Controllers
                         });
                         System.Console.WriteLine(sb.ToString().Length);
                         this._ticketContext.SaveChanges();
-                        return Redirect(selectedApp.Url);
+                        return Redirect(selectedApp.Url + "/Home/Login?ticket=" + sb.ToString());
                     }
                     catch (NullReferenceException e)
                     {
