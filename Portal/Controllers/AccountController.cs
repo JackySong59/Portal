@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -12,14 +14,17 @@ namespace Portal.Controllers
     {
         private readonly AccountContext _accountContext;
         private readonly ApplicationContext _applicationContext;
+        private readonly TicketContext _ticketContext;
 
         public AccountController(
             AccountContext accountContext, 
-            ApplicationContext applicationContext
+            ApplicationContext applicationContext,
+            TicketContext ticketContext
             )
         {
             this._accountContext = accountContext;
             this._applicationContext = applicationContext;
+            this._ticketContext = ticketContext;
         }
         
         // GET
@@ -79,6 +84,23 @@ namespace Portal.Controllers
                     selectedApp = applications.Where(app => app.Appkey == appkey).FirstOrDefault();
                     try
                     {
+                        String curDate = DateTime.Now.Date.ToString();
+                        byte[] dateArray = System.Text.Encoding.ASCII.GetBytes(curDate);
+                        MD5 md5 = MD5.Create();
+                        byte[] hash = md5.ComputeHash(dateArray);
+                        StringBuilder sb = new StringBuilder();
+                        for (int i = 0; i < hash.Length; i++)
+                        {
+                            sb.Append(hash[i].ToString("X"));
+                        }
+                        this._ticketContext.Add(new Ticket
+                        {
+                            Number = sb.ToString(),
+                            Appkey = appkey,
+                            Username = selectedAccount.Username
+                        });
+                        System.Console.WriteLine(sb.ToString().Length);
+                        this._ticketContext.SaveChanges();
                         return Redirect(selectedApp.Url);
                     }
                     catch (NullReferenceException e)
