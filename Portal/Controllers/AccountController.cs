@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using Microsoft.AspNetCore.Http;
@@ -34,6 +35,7 @@ namespace Portal.Controllers
             Account selectedAccount = null;
             Application selectedApp = null;
             bool loginSuccess = false;
+            ViewData["login"] = false;
             HttpContext.Request.Cookies.TryGetValue("Login", out String loginUser);
             var accounts = from ac in this._accountContext.Account select ac;
             var applications = from app in this._applicationContext.Application select app;
@@ -43,6 +45,7 @@ namespace Portal.Controllers
                 selectedAccount = accounts.Where(ac => ac.Username == loginUser).FirstOrDefault();
                 ViewData["status"] = "Login Success";
                 loginSuccess = true;
+                ViewData["login"] = true;
             }
             else if (!String.IsNullOrEmpty(username) && !String.IsNullOrEmpty(password))
             {
@@ -61,6 +64,7 @@ namespace Portal.Controllers
                             Expires = DateTime.Now.AddMinutes(30)
                         });
                         loginSuccess = true;
+                        ViewData["login"] = true;
                     }
                     else
                     {
@@ -115,6 +119,12 @@ namespace Portal.Controllers
             {
                 return View();
             }
+        }
+
+        public IActionResult Logout()
+        {
+            HttpContext.Response.Cookies.Delete("Login");
+            return Redirect("/");
         }
     }
 }

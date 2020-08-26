@@ -1,18 +1,40 @@
-﻿@model TModel
-
+﻿@model IEnumerable<Portal.Models.Application>
 @{
-    Layout = null;
+    ViewData["Title"] = "Application Access";
 }
 
 <!DOCTYPE html>
 
-<html>
-<head>
-    <title>title</title>
-</head>
-<body>
 <div>
-      
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>
+                Application Name
+            </th>
+            <th>
+                Access
+            </th>
+            <th>
+                Operation
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var app in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => app.Name)
+                </td>
+                <td>
+                    Yes
+                </td>
+                <td>
+                    <a href="/">Apply for Use</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
 </div>
-</body>
-</html>

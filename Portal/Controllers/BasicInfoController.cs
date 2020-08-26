@@ -35,23 +35,19 @@ namespace Portal.Controllers
             return View();
         }
         
-        public IActionResult HandleBasicInfoSubmit(String name, String telephone, String address, String email)
+        public IActionResult HandleBasicInfoSubmit([Bind("Name,Telephone,Address,Email")] Account account)
         {
             Account selectedAccount = null;
             HttpContext.Request.Cookies.TryGetValue("Login", out String loginUser);
 
             var accounts = from ac in this._accountContext.Account select ac;
-            if (!String.IsNullOrEmpty(name) && 
-                !String.IsNullOrEmpty(telephone) && 
-                !String.IsNullOrEmpty(address) && 
-                !String.IsNullOrEmpty(email) &&
-                loginUser != null)
+            if (account != null && loginUser != null)
             {
                 selectedAccount = accounts.Where(ac => ac.Username == loginUser).FirstOrDefault();
-                selectedAccount.Name = name;
-                selectedAccount.Telephone = telephone;
-                selectedAccount.Address = address;
-                selectedAccount.Email = email;
+                selectedAccount.Name = account.Name;
+                selectedAccount.Telephone = account.Telephone;
+                selectedAccount.Address = account.Address;
+                selectedAccount.Email = account.Email;
                 this._accountContext.SaveChanges();
             }
 

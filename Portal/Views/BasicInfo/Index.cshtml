@@ -1,32 +1,36 @@
-﻿@{
-    ViewData["Title"] = "Account";
+﻿@model Portal.Models.Account
+@{
+    ViewData["Title"] = "Basic Information";
 }
 
 <!DOCTYPE html>
 
-<div>
-    <h4 style="text-align: center;">Basic Information</h4>
-    <form asp-controller="BasicInfo" asp-action="HandleBasicInfoSubmit">
-        <p>
-            Name: <input type="text" name="name" value="@ViewData["name"]"/>
-            Telephone: <input type="text" name="telephone" value="@ViewData["telephone"]"/>
-            Address: <input type="text" name="address" value="@ViewData["address"]"/>
-            Email: <input typ="text" name="email" value="@ViewData["email"]"/>
-            <input type="submit" value="Submit"/>
-        </p>
-    </form>
+<h4 style="text-align: center;">Basic Information</h4>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-controller="BasicInfo" asp-action="HandleBasicInfoSubmit">
+            <div class="form-group">
+                <label asp-for="Name" class="col-form-label"></label>
+                <input asp-for="Name" class="form-control" value="@ViewData["name"]"/>
+            </div>
+            <div class="form-group">
+                <label asp-for="Telephone" class="col-form-label"></label>
+                <input asp-for="Telephone" class="form-control" value="@ViewData["telephone"]"/>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address" class="col-form-label"></label>
+                <input asp-for="Address" class="form-control" value="@ViewData["address"]"/>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="col-form-label"></label>
+                <input asp-for="Email" class="form-control" value="@ViewData["email"]"/>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Submit" class="btn btn-primary"/>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-6">
+        test
+    </div>
 </div>
-
-<style type="text/css">
-    p.login {
-    float: left;
-    }
-    
-    input.login {
-    float: left;
-    }
-    
-    div.login {
-    width: 50%;
-    }
-</style>
