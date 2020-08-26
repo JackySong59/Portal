@@ -1,0 +1,32 @@
+﻿@{
+    ViewData["Title"] = "Account";
+}
+
+<!DOCTYPE html>
+
+<div>
+    <h4 style="text-align: center;">Basic Information</h4>
+    <form asp-controller="BasicInfo" asp-action="HandleBasicInfoSubmit">
+        <p>
+            Name: <input type="text" name="name" value="@ViewData["name"]"/>
+            Telephone: <input type="text" name="telephone" value="@ViewData["telephone"]"/>
+            Address: <input type="text" name="address" value="@ViewData["address"]"/>
+            Email: <input typ="text" name="email" value="@ViewData["email"]"/>
+            <input type="submit" value="Submit"/>
+        </p>
+    </form>
+</div>
+
+<style type="text/css">
+    p.login {
+    float: left;
+    }
+    
+    input.login {
+    float: left;
+    }
+    
+    div.login {
+    width: 50%;
+    }
+</style>

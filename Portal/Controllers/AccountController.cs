@@ -77,7 +77,8 @@ namespace Portal.Controllers
             {
                 if (appkey == null)
                 {
-                    System.Console.WriteLine("No Appkey");
+                    System.Console.WriteLine("No Appkey, Go to Home Page");
+                    return Redirect("/");
                 }
                 else
                 {
@@ -99,7 +100,6 @@ namespace Portal.Controllers
                             Appkey = appkey,
                             Username = selectedAccount.Username
                         });
-                        System.Console.WriteLine(sb.ToString().Length);
                         this._ticketContext.SaveChanges();
                         return Redirect(selectedApp.Url + "/Home/Login?ticket=" + sb.ToString());
                     }
