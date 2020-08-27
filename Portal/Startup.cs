@@ -29,15 +29,7 @@ namespace Portal
             services.AddControllersWithViews();
             
             // Database Connection
-            services.AddDbContext<AccountContext>(options =>
-            {
-                options.UseMySql(Configuration.GetConnectionString("MysqlContext"));
-            });
-            services.AddDbContext<ApplicationContext>(options =>
-            {
-                options.UseMySql(Configuration.GetConnectionString("MysqlContext"));
-            });
-            services.AddDbContext<TicketContext>(options =>
+            services.AddDbContext<DataContext>(options =>
             {
                 options.UseMySql(Configuration.GetConnectionString("MysqlContext"));
             });

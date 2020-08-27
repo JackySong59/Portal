@@ -13,19 +13,11 @@ namespace Portal.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly AccountContext _accountContext;
-        private readonly ApplicationContext _applicationContext;
-        private readonly TicketContext _ticketContext;
+        private readonly DataContext _dataContext;
 
-        public AccountController(
-            AccountContext accountContext, 
-            ApplicationContext applicationContext,
-            TicketContext ticketContext
-            )
+        public AccountController(DataContext dataContext)
         {
-            this._accountContext = accountContext;
-            this._applicationContext = applicationContext;
-            this._ticketContext = ticketContext;
+            this._dataContext = dataContext;
         }
         
         // GET
@@ -37,8 +29,8 @@ namespace Portal.Controllers
             bool loginSuccess = false;
             ViewData["login"] = false;
             HttpContext.Request.Cookies.TryGetValue("Login", out String loginUser);
-            var accounts = from ac in this._accountContext.Account select ac;
-            var applications = from app in this._applicationContext.Application select app;
+            var accounts = from ac in this._dataContext.Account select ac;
+            var applications = from app in this._dataContext.Application select app;
 
             if (loginUser != null)
             {
@@ -98,13 +90,13 @@ namespace Portal.Controllers
                         {
                             sb.Append(hash[i].ToString("X"));
                         }
-                        this._ticketContext.Add(new Ticket
+                        this._dataContext.Add(new Ticket
                         {
                             Number = sb.ToString(),
                             Appkey = appkey,
                             Username = selectedAccount.Username
                         });
-                        this._ticketContext.SaveChanges();
+                        this._dataContext.SaveChanges();
                         return Redirect(selectedApp.Url + "/Home/Login?ticket=" + sb.ToString());
                     }
                     catch (NullReferenceException e)

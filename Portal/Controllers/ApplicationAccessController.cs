@@ -6,17 +6,17 @@ namespace Portal.Controllers
 {
     public class ApplicationAccessController : Controller
     {
-        private readonly ApplicationContext _applicationContext;
+        private readonly DataContext _dataContext;
 
-        public ApplicationAccessController(ApplicationContext applicationContext)
+        public ApplicationAccessController(DataContext dataContext)
         {
-            this._applicationContext = applicationContext;
+            this._dataContext = dataContext;
         }
         
         // GET
         public IActionResult Index()
         {
-            var applications = from app in this._applicationContext.Application select app;
+            var applications = from app in this._dataContext.Application select app;
             return View(applications);
         }
     }

@@ -8,11 +8,11 @@ namespace Portal.Controllers
 {
     public class BasicInfoController : Controller
     {
-        private readonly AccountContext _accountContext;
+        private readonly DataContext _dataContext;
 
-        public BasicInfoController(AccountContext accountContext)
+        public BasicInfoController(DataContext dataContext)
         {
-            this._accountContext = accountContext;
+            this._dataContext = dataContext;
         }
         
         // GET
@@ -21,7 +21,7 @@ namespace Portal.Controllers
             Account selectedAccount = null;
             HttpContext.Request.Cookies.TryGetValue("Login", out String loginUser);
 
-            var accounts = from ac in this._accountContext.Account select ac;
+            var accounts = from ac in this._dataContext.Account select ac;
 
             if (loginUser != null)
             {
@@ -40,7 +40,7 @@ namespace Portal.Controllers
             Account selectedAccount = null;
             HttpContext.Request.Cookies.TryGetValue("Login", out String loginUser);
 
-            var accounts = from ac in this._accountContext.Account select ac;
+            var accounts = from ac in this._dataContext.Account select ac;
             if (account != null && loginUser != null)
             {
                 selectedAccount = accounts.Where(ac => ac.Username == loginUser).FirstOrDefault();
@@ -48,7 +48,7 @@ namespace Portal.Controllers
                 selectedAccount.Telephone = account.Telephone;
                 selectedAccount.Address = account.Address;
                 selectedAccount.Email = account.Email;
-                this._accountContext.SaveChanges();
+                this._dataContext.SaveChanges();
             }
 
             return Redirect("/BasicInfo");

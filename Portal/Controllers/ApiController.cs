@@ -9,19 +9,19 @@ namespace Portal.Controllers
 {
     public class ApiController : Controller
     {
-        private readonly TicketContext _ticketContext;
+        private readonly DataContext _dataContext;
 
         public ApiController(
-            TicketContext ticketContext
+            DataContext dataContext
         )
         {
-            this._ticketContext = ticketContext;
+            this._dataContext = dataContext;
         }
         
         // GET
         public String Index(String appkey, String ticket)
         {
-            var tickets = from t in this._ticketContext.Ticket select t;
+            var tickets = from t in this._dataContext.Ticket select t;
             if (!String.IsNullOrEmpty(appkey) && !String.IsNullOrEmpty(ticket))
             {
                 Ticket selectedTicket = tickets.Where(t => t.Number == ticket).FirstOrDefault();
@@ -46,7 +46,7 @@ namespace Portal.Controllers
         
         public String LoginVerification(String appkey, String ticket)
         {
-            var tickets = from t in this._ticketContext.Ticket select t;
+            var tickets = from t in this._dataContext.Ticket select t;
             if (!String.IsNullOrEmpty(appkey) && !String.IsNullOrEmpty(ticket))
             {
                 Ticket selectedTicket = tickets.Where(t => t.Number == ticket).FirstOrDefault();
