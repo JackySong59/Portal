@@ -24,6 +24,8 @@ namespace Portal.Controllers
             if (loginUser != null)
             {
                 var accounts = from ac in this._dataContext.Account select ac;
+                var allApplications = from app in this._dataContext.Application select app;
+                var allApps = allApplications.ToList();
                 var selectedAccount = accounts.Where(ac => ac.Username == loginUser).FirstOrDefault();
                 var applications = this._dataContext.Account
                     .Where(acc => acc.Username == loginUser)
@@ -35,10 +37,32 @@ namespace Portal.Controllers
                 {
                     apps.Add(aa.Application);
                 }
-                return View(apps);
+                return View(allApps);
             }
 
-            return null;
+            return View();
+        }
+
+        public IActionResult ApplyForUse(int? id)
+        {
+            HttpContext.Request.Cookies.TryGetValue("Login", out String loginUser);
+
+            var accounts = from ac in this._dataContext.Account select ac;
+            var applications = from app in this._dataContext.Application select app;
+            var selectedAccount = accounts.Where(ac => ac.Username == loginUser).FirstOrDefault();
+            var selectedApplication = applications.Where(app => app.Id == id).FirstOrDefault();
+            this._dataContext.Add(new ApplyForApp
+            {
+                App = selectedApplication,
+                Appid = selectedApplication.Id,
+                Applyer = selectedAccount,
+                Applyerid = selectedAccount.Id,
+                Processed = "No",
+                Result = ""
+            });
+            this._dataContext.SaveChanges();
+
+            return Redirect("/ApplicationAccess");
         }
     }
 }

@@ -1,0 +1,55 @@
+﻿@model IEnumerable<Portal.Models.ApplyForApp>
+@{
+    ViewData["Title"] = "Application Access";
+}
+
+<!DOCTYPE html>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>
+            Id
+        </th>
+        <th>
+            Applyer
+        </th>
+        <th>
+            Application
+        </th>
+        <th>
+            Is Processed
+        </th>
+        <th>
+            Processing Result
+        </th>
+        <th>
+            Operation
+        </th>
+    </tr>
+    </thead>
+    @foreach (var afa in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => afa.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => afa.Applyer.Username)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => afa.App.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => afa.Processed)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => afa.Result)
+            </td>
+            <td>
+                <a href="/">Accept</a>
+                <a href="/">Decline</a>
+            </td>
+        </tr>
+    }
+</table>

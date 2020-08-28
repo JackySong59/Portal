@@ -27,12 +27,24 @@
                 <td>
                     @Html.DisplayFor(modelItem => app.Name)
                 </td>
-                <td>
-                    Yes
-                </td>
-                <td>
-                    <a href="/">Apply for Use</a>
-                </td>
+                @if (app.AccountApplications != null)
+                {
+                    <td>
+                        Yes
+                    </td>
+                    <td>
+                        
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        No
+                    </td>
+                    <td>
+                        <a asp-action="ApplyForUse" asp-route-id="@app.Id">Apply for Use</a>
+                    </td>
+                }
             </tr>
         }
         </tbody>

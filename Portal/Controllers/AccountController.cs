@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Portal.DB;
 using Portal.Models;
@@ -97,7 +99,26 @@ namespace Portal.Controllers
                             Username = selectedAccount.Username
                         });
                         this._dataContext.SaveChanges();
-                        return Redirect(selectedApp.Url + "/Home/Login?ticket=" + sb.ToString());
+                        var a = this._dataContext.Account
+                            .Where(acc => acc.Username == selectedAccount.Username)
+                            .Include(aa => aa.AccountApplications)
+                            .ThenInclude(aa => aa.Application)
+                            .FirstOrDefault();
+                        List<String> appKeys = new List<String>();
+                        foreach (var aa in a.AccountApplications)
+                        {
+                            appKeys.Add(aa.Application.Appkey);
+                        }
+
+                        if (appKeys.Contains(selectedApp.Appkey))
+                        {
+                            return Redirect(selectedApp.Url + "/Home/Login?ticket=" + sb.ToString());
+                        }
+                        else
+                        {
+                            ViewData["status"] =
+                                "You have no access to this application, please contact the administrator";
+                        }
                     }
                     catch (NullReferenceException e)
                     {
