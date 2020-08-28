@@ -20,6 +20,11 @@ namespace Portal.Controllers
 
         public IActionResult Index()
         {
+            HttpContext.Request.Cookies.TryGetValue("Login", out String loginUser);
+            if (loginUser == null)
+            {
+                return Redirect("/Account");
+            }
             // Test
             return View();
         }

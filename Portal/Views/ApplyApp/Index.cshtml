@@ -46,10 +46,19 @@
             <td>
                 @Html.DisplayFor(modelItem => afa.Result)
             </td>
-            <td>
-                <a href="/">Accept</a>
-                <a href="/">Decline</a>
-            </td>
+            @if (afa.Processed == "No")
+            {
+                <td>
+                    <a asp-action="Accept" asp-route-id="@afa.Id">Accept</a>
+                    <a asp-action="Decline" asp-route-id="@afa.Id">Decline</a>
+                </td>
+            }
+            else
+            {
+                <td>
+                    
+                </td>
+            }
         </tr>
     }
 </table>

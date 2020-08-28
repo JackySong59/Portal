@@ -21,6 +21,10 @@ namespace Portal.Controllers
         public IActionResult Index()
         {
             HttpContext.Request.Cookies.TryGetValue("Login", out String loginUser);
+            if (loginUser == null)
+            {
+                return Redirect("/Account");
+            }
             if (loginUser != null)
             {
                 var accounts = from ac in this._dataContext.Account select ac;
@@ -51,17 +55,22 @@ namespace Portal.Controllers
             var applications = from app in this._dataContext.Application select app;
             var selectedAccount = accounts.Where(ac => ac.Username == loginUser).FirstOrDefault();
             var selectedApplication = applications.Where(app => app.Id == id).FirstOrDefault();
-            this._dataContext.Add(new ApplyForApp
+            var selectedApp = this._dataContext.ApplyForApp.AsQueryable()
+                .Where(afa => afa.Appid == id && afa.Applyerid == selectedAccount.Id)
+                .FirstOrDefault();
+            if (selectedApp == null || (selectedApp != null && selectedApp.Result == "Declined"))
             {
-                App = selectedApplication,
-                Appid = selectedApplication.Id,
-                Applyer = selectedAccount,
-                Applyerid = selectedAccount.Id,
-                Processed = "No",
-                Result = ""
-            });
-            this._dataContext.SaveChanges();
-
+                this._dataContext.Add(new ApplyForApp
+                {
+                    App = selectedApplication,
+                    Appid = selectedApplication.Id,
+                    Applyer = selectedAccount,
+                    Applyerid = selectedAccount.Id,
+                    Processed = "No",
+                    Result = ""
+                });
+                this._dataContext.SaveChanges();
+            }
             return Redirect("/ApplicationAccess");
         }
     }

@@ -20,6 +20,10 @@ namespace Portal.Controllers
         {
             Account selectedAccount = null;
             HttpContext.Request.Cookies.TryGetValue("Login", out String loginUser);
+            if (loginUser == null)
+            {
+                return Redirect("/Account");
+            }
 
             var accounts = from ac in this._dataContext.Account select ac;
 
