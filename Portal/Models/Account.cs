@@ -13,5 +13,8 @@ namespace Portal.Models
         public String Telephone { get; set; }
         public String Address { get; set; }
         public String Email { get; set; }
+        
+        public List<AccountApplication> AccountApplications { get; set; }
+        public List<ApplyForApp> ApplyForApps { get; set; }
     }
 }
