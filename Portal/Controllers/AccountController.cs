@@ -23,9 +23,9 @@ namespace Portal.Controllers
         }
         
         // GET
-        public IActionResult Index(String username, String password, String appkey)
+        public IActionResult Index([Bind("Username,Password,Appkey")] Login login)
         {
-            ViewData["appkey"] = appkey;
+            ViewData["appkey"] = login.Appkey;
             Account selectedAccount = null;
             Application selectedApp = null;
             bool loginSuccess = false;
@@ -41,16 +41,16 @@ namespace Portal.Controllers
                 loginSuccess = true;
                 ViewData["login"] = true;
             }
-            else if (!String.IsNullOrEmpty(username) && !String.IsNullOrEmpty(password))
+            else if (!String.IsNullOrEmpty(login.Username) && !String.IsNullOrEmpty(login.Password))
             {
-                selectedAccount = accounts.Where(ac => ac.Username == username).FirstOrDefault();
+                selectedAccount = accounts.Where(ac => ac.Username == login.Username).FirstOrDefault();
                 if (selectedAccount == null)
                 {
                     ViewData["status"] = "No User";
                 }
                 else
                 {
-                    if (selectedAccount.Password == password)
+                    if (selectedAccount.Password == login.Password)
                     {
                         ViewData["status"] = "Login Success";
                         HttpContext.Response.Cookies.Append("Login", selectedAccount.Username, new CookieOptions
@@ -73,14 +73,14 @@ namespace Portal.Controllers
 
             if (loginSuccess == true)
             {
-                if (appkey == null)
+                if (login.Appkey == null)
                 {
                     System.Console.WriteLine("No Appkey, Go to Home Page");
                     return Redirect("/");
                 }
                 else
                 {
-                    selectedApp = applications.Where(app => app.Appkey == appkey).FirstOrDefault();
+                    selectedApp = applications.Where(app => app.Appkey == login.Appkey).FirstOrDefault();
                     try
                     {
                         String curDate = DateTime.Now.Date.ToString();
@@ -95,7 +95,7 @@ namespace Portal.Controllers
                         this._dataContext.Add(new Ticket
                         {
                             Number = sb.ToString(),
-                            Appkey = appkey,
+                            Appkey = login.Appkey,
                             Username = selectedAccount.Username
                         });
                         this._dataContext.SaveChanges();
