@@ -83,7 +83,11 @@ namespace Portal.Controllers
                     selectedApp = applications.Where(app => app.Appkey == login.Appkey).FirstOrDefault();
                     try
                     {
-                        String curDate = DateTime.Now.Date.ToString();
+                        String curDate = DateTime.Now.Date.ToString() +
+                                         DateTime.Now.Hour.ToString() +
+                                         DateTime.Now.Minute.ToString() +
+                                         DateTime.Now.Second.ToString() +
+                                         DateTime.Now.Millisecond.ToString();
                         byte[] dateArray = System.Text.Encoding.ASCII.GetBytes(curDate);
                         MD5 md5 = MD5.Create();
                         byte[] hash = md5.ComputeHash(dateArray);

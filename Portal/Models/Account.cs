@@ -16,5 +16,6 @@ namespace Portal.Models
         
         public List<AccountApplication> AccountApplications { get; set; }
         public List<ApplyForApp> ApplyForApps { get; set; }
+        public int ReportToId { get; set; }
     }
 }

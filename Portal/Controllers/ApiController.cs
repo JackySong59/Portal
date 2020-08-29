@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Portal.DB;
@@ -67,6 +68,32 @@ namespace Portal.Controllers
             }
 
             return "No Ticket";
+        }
+
+        public String GetAffiliateStaff(String username)
+        {
+            var selectedAccount = this._dataContext.Account
+                .AsQueryable()
+                .Where(a => a.Username == username)
+                .FirstOrDefault();
+            var selectedStaff = this._dataContext.Account
+                .AsQueryable()
+                .Where(s => s.ReportToId == selectedAccount.Id)
+                .ToList();
+            List<Object> list = new List<object>();
+            foreach (var s in selectedStaff)
+            {
+                list.Add(new
+                {
+                    Id = s.Id,
+                    Username = s.Username
+                });
+            }
+            var returnObj = new
+            {
+                returnObj = list
+            };
+            return JsonConvert.SerializeObject(returnObj);
         }
     }
 }
